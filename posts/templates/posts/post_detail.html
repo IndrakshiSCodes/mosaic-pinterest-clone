@@ -1,0 +1,49 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ post.image.url }}" class="img-fluid rounded" alt="{{ post.caption }}" style="border-radius: 15px !important;">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ post.caption }}</h2>
+        <p class="text-muted"><i class="far fa-calendar"></i> {{ post.upload_date|date:"F d, Y" }}</p>
+        <p>{{ post.description }}</p>
+        
+        {% if post.link %}
+        <a href="{{ post.link }}" target="_blank" class="btn btn-upload" style="border-radius: 25px;">
+            <i class="fas fa-external-link-alt"></i> Visit Link
+        </a>
+        {% endif %}
+        
+        <div class="mt-3">
+            <strong><i class="fas fa-tags"></i> Keywords:</strong>
+            <p>{{ post.keywords }}</p>
+        </div>
+        
+        <div class="mt-3">
+            <a href="{% url 'edit_post' post.pk %}" class="btn btn-search" style="border-radius: 25px;">
+                <i class="fas fa-edit"></i> Edit Post
+            </a>
+            <a href="{% url 'delete_post' post.pk %}" class="btn btn-danger" style="border-radius: 25px;">
+                <i class="fas fa-trash"></i> Delete Post
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<h3><i class="fas fa-sparkles"></i> you might also vibe with these</h3>
+<div class="masonry">
+    {% for similar_post in similar_posts %}
+    <div class="masonry-item">
+        <a href="{% url 'post_detail' similar_post.pk %}">
+            <img src="{{ similar_post.image.url }}" alt="{{ similar_post.caption }}">
+        </a>
+    </div>
+    {% empty %}
+    <p>no similar posts found, homie</p>
+    {% endfor %}
+</div>
+{% endblock %}

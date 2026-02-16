@@ -1,0 +1,33 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">wait wait wait... 👀</h2>
+        
+        <div class="alert alert-danger" style="border-radius: 15px;">
+            <strong>hey hey! wait, are you sure you want this post to be gone? she won't ever come back, dawg.</strong> 💔
+        </div>
+        
+        <div class="card mb-4" style="border-radius: 15px; overflow: hidden;">
+            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.caption }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.caption }}</h5>
+                <p class="card-text">{{ post.description }}</p>
+            </div>
+        </div>
+        
+        <p style="font-size: 1.1rem;">like... fr fr? no going back bestie 🥺</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="border-radius: 25px;">
+                <i class="fas fa-trash"></i> yep, delete it
+            </button>
+            <a href="{% url 'post_detail' post.pk %}" class="btn btn-search" style="border-radius: 25px;">
+                <i class="fas fa-undo"></i> nah, keep it
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">discover</h2>
+
+<div class="masonry">
+    {% for post in posts %}
+    <div class="masonry-item">
+        <a href="{% url 'post_detail' post.pk %}">
+            <img src="{{ post.image.url }}" alt="{{ post.caption }}">
+        </a>
+    </div>
+    {% empty %}
+    <p>No posts yet. <a href="{% url 'upload_post' %}">Upload the first one!</a></p>
+    {% endfor %}
+</div>
+{% endblock %}

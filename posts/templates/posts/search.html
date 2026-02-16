@@ -1,0 +1,17 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<h2 class="mb-4"><i class="fas fa-search"></i> search results for "{{ query }}"</h2>
+
+<div class="masonry">
+    {% for post in posts %}
+    <div class="masonry-item">
+        <a href="{% url 'post_detail' post.pk %}">
+            <img src="{{ post.image.url }}" alt="{{ post.caption }}">
+        </a>
+    </div>
+    {% empty %}
+    <p style="font-size: 1.2rem;">no results found for "{{ query }}" blud, try something else maybe?</p>
+    {% endfor %}
+</div>
+{% endblock %}

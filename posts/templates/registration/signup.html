@@ -1,0 +1,53 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card" style="border: none; border-radius: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4" style="text-transform: lowercase;">join mosaic</h2>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="border-radius: 0;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label"><i class="fas fa-user"></i> Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required style="border-radius: 0;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required style="border-radius: 0;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password1" class="form-label"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" class="form-control" id="password1" name="password1" required style="border-radius: 0;">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password2" class="form-label"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" class="form-control" id="password2" name="password2" required style="border-radius: 0;">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-upload w-100 mt-3">
+                        <i class="fas fa-user-plus"></i> sign up
+                    </button>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p>already have an account? <a href="{% url 'login' %}" style="color: #4A90E2;">log in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
