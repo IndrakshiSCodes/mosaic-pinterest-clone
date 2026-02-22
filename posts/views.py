@@ -1,10 +1,12 @@
-from .models import Post, UserTheme  # Update this line to include UserTheme
+from .models import Post, UserTheme  
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.db.models import Q, Count
-from django.contrib.auth import login, authenticate, logout  # Add this line
-from django.contrib.auth.models import User  # Add this line
-from django.contrib import messages  # Add this line
+from django.contrib.auth import login, authenticate, logout  
+from django.contrib.auth.models import User  
+from django.contrib import messages  
+import re
+
 
 def home(request):
     posts = Post.objects.all()
@@ -93,7 +95,8 @@ def upload_post(request):
             description=description,
             link=link,
             keywords=keywords,
-            category=category
+            category=category,
+            user=request.user  
         )
         return redirect('home')
     
@@ -102,26 +105,36 @@ def upload_post(request):
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     
+    if post.user != request.user:
+        messages.error(request, "hey bestie, you can't edit someone else's post! 🚫")
+        return redirect('post_detail', pk=pk)
+    
     if request.method == 'POST':
+        if request.FILES.get('image'):
+            post.image = request.FILES.get('image')
         post.caption = request.POST.get('caption')
         post.description = request.POST.get('description')
         post.link = request.POST.get('link')
         post.keywords = request.POST.get('keywords')
-        
-        # Update image if new one is uploaded
-        if request.FILES.get('image'):
-            post.image = request.FILES.get('image')
-        
+        post.category = request.POST.get('category', post.category)
         post.save()
-        return redirect('post_detail', pk=post.pk)
+        messages.success(request, "post updated successfully! ✨")
+        return redirect('post_detail', pk=pk)
     
     return render(request, 'posts/edit_post.html', {'post': post})
 
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     
+    
+    if post.user != request.user:
+        messages.error(request, "hey bestie, you can't delete someone else's post! 🚫")
+        return redirect('post_detail', pk=pk)
+    
     if request.method == 'POST':
-        post.delete()
+        post.image.delete()  # Delete the image file
+        post.delete()  # Delete from database
+        messages.success(request, "post deleted successfully! ✨")
         return redirect('home')
     
     return render(request, 'posts/delete_post.html', {'post': post})
@@ -134,11 +147,31 @@ def signup_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
+        contact_number = request.POST.get('contact_number')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
+
+        # Username validation
+        if not re.match(r'^[A-Za-z][A-Za-z0-9-]*$', username):
+            messages.error(request, "username must start with a letter and can only contain letters, numbers, and '-'")
+            return redirect('signup')
         
+        # Contact number validation
+        if not contact_number.isdigit():
+            messages.error(request, "contact number must contain only digits")
+            return redirect('signup')
+
+        if len(contact_number) != 10:
+            messages.error(request, "contact number must be exactly 10 digits")
+            return redirect('signup')
+
+        if contact_number[0] in ['1','2','3','4','5']:
+            messages.error(request, "contact number must start with 6, 7, 8, or 9")
+            return redirect('signup')
+
+
         if password1 != password2:
-            messages.error(request, "passwords don't match bestie 😔")
+            messages.error(request, "passwords don't match")
             return redirect('signup')
         
         if User.objects.filter(username=username).exists():
@@ -146,11 +179,16 @@ def signup_view(request):
             return redirect('signup')
         
         user = User.objects.create_user(username=username, email=email, password=password1)
+        user_theme, created = UserTheme.objects.get_or_create(user=user)
+        user_theme.contact_number = contact_number
+        user_theme.save()
+
         login(request, user)
         messages.success(request, f"welcome to mosaic, {username}! ✨")
         return redirect('home')
     
     return render(request, 'registration/signup.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -161,10 +199,10 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
-            messages.success(request, f"hey {username}, you're back! 👋")
+            messages.success(request, f"hey {username}, you're back! ")
             return redirect('home')
         else:
-            messages.error(request, "wrong username or password bestie 😕")
+            messages.error(request, "wrong username or password")
             return redirect('login')
     
     return render(request, 'registration/login.html')
@@ -181,3 +219,13 @@ def change_theme(request, theme_name):
         user_theme.save()
         messages.success(request, f"theme changed to {theme_name}! ✨")
     return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+def user_profile(request, username):
+    profile_user = get_object_or_404(User, username=username)
+    user_posts = Post.objects.filter(user=profile_user).order_by('-upload_date')
+    
+    return render(request, 'posts/profile.html', {
+        'profile_user': profile_user,
+        'user_posts': user_posts,
+        'post_count': user_posts.count()
+    })

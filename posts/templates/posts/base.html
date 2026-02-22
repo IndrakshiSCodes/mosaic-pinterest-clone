@@ -13,10 +13,10 @@
         {% if user.usertheme.theme == 'benito' %}
             <style>
                 :root {
-                    --navbar-color: #B45B29;
-                    --bg-color: #F7D1D8;
-                    --text-color: #FFD700;
-                    --button-color: #014D4E;
+                    --navbar-color: #c64f4f;
+                    --bg-color: #a1c99d;
+                    --text-color: #51460a;
+                    --button-color: #036940;
                     --button-hover: #013D3E;
                 }
             </style>
@@ -25,7 +25,7 @@
                 :root {
                     --navbar-color: #7A9E7E;
                     --bg-color: #FFF8F0;
-                    --text-color: #C05746;
+                    --text-color: #4f231d;
                     --button-color: #E6CCB2;
                     --button-hover: #D4B89E;
                 }
@@ -35,7 +35,7 @@
                 :root {
                     --navbar-color: #FF5A1F;
                     --bg-color: #FFD5BE;
-                    --text-color: #DCF9F1;
+                    --text-color: #194538;
                     --button-color: #012D20;
                     --button-hover: #011D15;
                 }
@@ -45,7 +45,7 @@
                 :root {
                     --navbar-color: #710014;
                     --bg-color: #838F6F;
-                    --text-color: #F2F1ED;
+                    --text-color: #4b4322;
                     --button-color: #5E82AC;
                     --button-hover: #4D6B8C;
                 }
@@ -55,7 +55,7 @@
                 :root {
                     --navbar-color: #372516;
                     --bg-color: #FBD271;
-                    --text-color: #E7BD8B;
+                    --text-color: #3d3326;
                     --button-color: #89A377;
                     --button-hover: #6F8360;
                 }
@@ -377,6 +377,21 @@
             </div>
         </div>
     </nav>
+
+    </nav>
+
+{% if user.is_authenticated %}
+<div style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+    <a href="{% url 'user_profile' user.username %}" style="text-decoration: none;">
+        <div style="display: flex; align-items: center; gap: 10px; background-color: var(--button-color); padding: 10px 15px; border-radius: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem; color: white;"></i>
+            <span style="color: white; font-weight: 500;">{{ user.username }}</span>
+        </div>
+    </a>
+</div>
+{% endif %}
+
+<div class="container mt-4">
 
     <div class="container mt-4">
         {% block content %}

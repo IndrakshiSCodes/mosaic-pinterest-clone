@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, UserTheme
+
+admin.site.register(UserTheme)
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):

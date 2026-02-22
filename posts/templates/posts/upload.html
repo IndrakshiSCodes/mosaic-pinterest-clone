@@ -10,51 +10,47 @@
             
             <div class="mb-3">
                 <label for="image" class="form-label"><i class="fas fa-image"></i> Image</label>
-                <input type="file" class="form-control" id="image" name="image" required style="border-radius: 15px;">
+                <input type="file" class="form-control" id="image" name="image" required style="border-radius: 0;">
             </div>
             
             <div class="mb-3">
                 <label for="caption" class="form-label"><i class="fas fa-heading"></i> Caption</label>
-                <input type="text" class="form-control" id="caption" name="caption" required style="border-radius: 15px;">
+                <input type="text" class="form-control" id="caption" name="caption" required style="border-radius: 0;">
             </div>
             
             <div class="mb-3">
                 <label for="description" class="form-label"><i class="fas fa-align-left"></i> Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required style="border-radius: 15px;"></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" required style="border-radius: 0;"></textarea>
             </div>
             
             <div class="mb-3">
                 <label for="link" class="form-label"><i class="fas fa-link"></i> Link (optional)</label>
-                <input type="url" class="form-control" id="link" name="link" placeholder="https://example.com" style="border-radius: 15px;">
+                <input type="url" class="form-control" id="link" name="link" placeholder="https://example.com" style="border-radius: 0;">
             </div>
             
             <div class="mb-3">
                 <label for="keywords" class="form-label"><i class="fas fa-tags"></i> Keywords</label>
-                <input type="text" class="form-control" id="keywords" name="keywords" placeholder="fashion, aesthetic, mood" required style="border-radius: 15px;">
+                <input type="text" class="form-control" id="keywords" name="keywords" placeholder="fashion, aesthetic, mood" required style="border-radius: 0;">
                 <small class="text-muted">separate keywords with commas bestie</small>
             </div>
+            
             <div class="mb-3">
-    <label for="keywords" class="form-label"><i class="fas fa-tags"></i> Keywords</label>
-    <input type="text" class="form-control" id="keywords" name="keywords" placeholder="fashion, aesthetic, mood" required style="border-radius: 15px;">
-    <small class="text-muted">separate keywords with commas bestie</small>
-</div>
-
-<div class="mb-3">
-    <label for="category" class="form-label"><i class="fas fa-users"></i> Category</label>
-    <select class="form-control" id="category" name="category" required style="border-radius: 15px;">
-        <option value="neutral">Neutral</option>
-        <option value="ladies">Ladies</option>
-        <option value="gentlemen">Gentlemen</option>
-    </select>
-</div>
-
-<button type="submit" class="btn btn-upload" style="border-radius: 25px;">
-            <button type="submit" class="btn btn-upload" style="border-radius: 25px;">
-                <i class="fas fa-check"></i> post it!
-            </button>
-            <a href="{% url 'home' %}" class="btn btn-search" style="border-radius: 25px;">
-                <i class="fas fa-times"></i> nvm
-            </a>
+                <label for="category" class="form-label"><i class="fas fa-users"></i> Category</label>
+                <select class="form-control" id="category" name="category" required style="border-radius: 0;">
+                    <option value="neutral">Neutral</option>
+                    <option value="ladies">Ladies</option>
+                    <option value="gentlemen">Gentlemen</option>
+                </select>
+            </div>
+            
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-upload">
+                    <i class="fas fa-check"></i> post it!
+                </button>
+                <a href="{% url 'home' %}" class="btn btn-search">
+                    <i class="fas fa-times"></i> nvm
+                </a>
+            </div>
         </form>
     </div>
 </div>

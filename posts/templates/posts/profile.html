@@ -1,0 +1,31 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<div class="profile-header mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <div class="profile-icon">
+            <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--text-color);"></i>
+        </div>
+        <div>
+            <h2 style="margin-bottom: 0;">{{ profile_user.username }}</h2>
+            <p style="margin-bottom: 0;">{{ post_count }} posts</p>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: var(--text-color); opacity: 0.3;">
+
+<h3 class="mb-4"><i class="fas fa-images"></i> your posts</h3>
+
+<div class="masonry">
+    {% for post in user_posts %}
+    <div class="masonry-item">
+        <a href="{% url 'post_detail' post.pk %}">
+            <img src="{{ post.image.url }}" alt="{{ post.caption }}">
+        </a>
+    </div>
+    {% empty %}
+    <p style="font-size: 1.2rem;">no posts yet, friend. start uploading!</p>
+    {% endfor %}
+</div>
+{% endblock %}
